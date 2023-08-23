@@ -1,7 +1,7 @@
 (ns gilded.core-test
   (:require [clojure.test :refer [deftest is testing]]
-           [gilded.core :as g]
-           [gilded.main :as m]))
+            [gilded.core :as g]
+            [gilded.main :as m]))
 
 (def fixture
   [{:name "foo", :quality 20, :sell-in 10}])
@@ -21,24 +21,24 @@
 
 (deftest simple-test
   (let [store-0 (g/make-store fixture)
-       item-0 (first (g/item-seq store-0))
-       store (g/make-store fixture)
-       _ (g/update-quality! store)
-       item (first (g/item-seq store))]
-   (testing "day 0"
-     (is (= "foo" (:name item-0)))
-     (is (= 20 (:quality item-0)))
-     (is (= 10 (:sell-in item-0)))
-     (is (= ["foo" 20 10] (item->tuple item-0)))
+        item-0 (first (g/item-seq store-0))
+        store (g/make-store fixture)
+        _ (g/update-quality! store)
+        item (first (g/item-seq store))]
+    (testing "day 0"
+      (is (= "foo" (:name item-0)))
+      (is (= 20 (:quality item-0)))
+      (is (= 10 (:sell-in item-0)))
+      (is (= ["foo" 20 10] (item->tuple item-0)))
      ;; end day 0
-     )
+      )
 
-   (testing "day 1"
-     (is (= "foo" (:name item)))
-     (is (= 19 (:quality item)))
-     (is (= 9 (:sell-in item)))))
+    (testing "day 1"
+      (is (= "foo" (:name item)))
+      (is (= 19 (:quality item)))
+      (is (= 9 (:sell-in item)))))
   ;; end day 1
- )
+  )
 
 ;; copilot generated this test
 ;; this test is similar to simple-test, but checks the whole store instead of each individual item.
@@ -160,3 +160,6 @@
       (is (= [["Conjured Mana Cake" 0 -1]] (map item->tuple (g/item-seq store)))))
     ;; end conjured-test
     ))
+
+;; what is the constant for the max positive integer in clojure?
+;; I'm using Long/MAX_VALUE

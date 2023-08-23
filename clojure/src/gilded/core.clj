@@ -34,15 +34,32 @@
   [item]
   (str/starts-with? (:name @item) "Conjured"))
 
+(defn pos-quality? [item]
+  "Checks if an item has a positive quality."
+  (> (:quality @item) 0))
+
+(defn dec-not-legendaries-with-pos-quality
+  "Decrements the quality of an item, if it is not legendary and has a positive quality."
+  [item]
+  (when (and (pos-quality? item)
+             (not (legendary? item)))
+    (swap! item update :quality dec)))
+
+
+(def max-modifiable-quality 50)
+
+(defn less-than-max-modifiable-quality? [item]
+  "Checks if an item has a quality less than the max modifiable quality."
+  (< (:quality @item) max-modifiable-quality))
+
+
 (defn update-quality! [store]
   ;; this function is the only one that should be modified, according to the instructions.
   (doseq [item store]
-    (if (and (not (better-with-age? item))
-             (not (concert? item)))
+    (if (not (or (better-with-age? item)
+             (concert? item)))
 
-      (when (> (:quality @item) 0)
-        (when (not (legendary? item))
-          (swap! item update :quality dec)))
+      (dec-not-legendaries-with-pos-quality item)
 
       (when (< (:quality @item) 50)
         (swap! item update :quality inc)
@@ -64,5 +81,5 @@
             (when (not (legendary? item))
               (swap! item update :quality dec)))
           (swap! item update :quality #(- % %)))
-        (when (< (:quality @item) 50)
+        (when (less-than-max-modifiable-quality? item)
           (swap! item update :quality inc))))))
