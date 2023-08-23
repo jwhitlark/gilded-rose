@@ -1,12 +1,12 @@
 (ns gilded.main
-  (:require [gilded.core :as x]))
+  (:require [gilded.core :as g]))
 
 (defn item->str [item]
   (str (:name item) ", " (:sell-in item) ", " (:quality item)))
 
 (defn print-store [store]
   (println "name, sellIn, quality")
-  (doseq [item (x/item-seq store)]
+  (doseq [item (g/item-seq store)]
     (println (item->str item)))
   (println))
 
@@ -25,8 +25,8 @@
   (let [n-days (if (nil? (first args))
                  2
                  (Long/parseLong (first args)))
-        store (x/make-store fixture)]
+        store (g/make-store fixture)]
     (dotimes [day n-days]
       (println "-------- day" day "--------")
       (print-store store)
-      (x/update-quality! store))))
+      (g/update-quality! store))))
